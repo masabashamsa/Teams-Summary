@@ -1,0 +1,68 @@
+{
+    "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.15/MicrosoftTeams.schema.json",
+    "manifestVersion": "1.15",
+    "version": "1.0.0",
+    "id": "${{TEAMS_APP_ID}}",
+    "packageName": "com.microsoft.teams.extension",
+    "developer": {
+        "name": "Teams App, Inc.",
+        "websiteUrl": "${{TAB_ENDPOINT}}",
+        "privacyUrl": "${{TAB_ENDPOINT}}/index.html#/privacy",
+        "termsOfUseUrl": "${{TAB_ENDPOINT}}/index.html#/termsofuse"
+    },
+    "icons": {
+        "color": "color.png",
+        "outline": "outline.png"
+    },
+    "name": {
+        "short": "Summarize${{APP_NAME_SUFFIX}}",
+        "full": "Full name for Teams Summary"
+    },
+    "description": {
+        "short": "Summarize - Effortless meeting summaries and more!",
+        "full": "Summarize is your go-to app for keeping track of important meeting details. View upcoming meetings, subscribe to receive personalized summaries, and get key highlights delivered directly to your chat. With Summarize, managing your meetings has never been easier."
+    },
+    "accentColor": "#FFFFFF",
+    "bots": [
+        {
+            "botId": "a69596c9-7554-42d2-870e-c29da80772c6",
+            "scopes": [
+                "personal"
+            ],
+            "supportsFiles": false,
+            "isNotificationOnly": false,
+            "commandLists": [
+                {
+                    "scopes":["personal", "team"],
+                    "commands": [
+                        
+                    ]
+                }
+            ]
+        }
+    ],
+    "composeExtensions": [],
+    "configurableTabs": [],
+    "staticTabs": [
+        {
+            "entityId": "index",
+            "name": "Personal Tab",
+            "contentUrl": "${{TAB_ENDPOINT}}/index.html#/tab",
+            "websiteUrl": "${{TAB_ENDPOINT}}/index.html#/tab",
+            "scopes": [
+                "personal"
+            ]
+        }
+    ],
+    "permissions": [
+        "identity",
+        "messageTeamMembers"
+    ],
+    "validDomains": [
+        "${{TAB_DOMAIN}}"
+    ],
+    "webApplicationInfo": {
+        "id": "${{AAD_APP_CLIENT_ID}}",
+        "resource": "api://${{TAB_DOMAIN}}/${{AAD_APP_CLIENT_ID}}"
+    }
+}
