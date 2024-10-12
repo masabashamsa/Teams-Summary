@@ -14,12 +14,13 @@
 }
 
 .modal-content {
-    background: linear-gradient(135deg, #008080 0%, #49bebe 100%);
+    background: #149797;
+    font-family: 'Segoe UI', sans-serif;
     color: white;
     border-radius: 8px;
-    padding: 20px;
+    padding: 30px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-    width: 600px; 
+    width: 500px; 
     max-height: 600px; 
     overflow-y: auto; 
     margin: auto; /* Center the modal */
@@ -48,12 +49,11 @@
     font-size: 24px;
     background: none;
     border: none;
-    color: #888;
+    color: #202020;
     cursor: pointer;
     transition: color 0.3s ease-in-out;
 }
 
 .close-button:hover {
- color: #555;
+ color: #313030;
 }
-

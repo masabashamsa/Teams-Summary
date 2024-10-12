@@ -23,6 +23,17 @@
         "full": "Summarize is your go-to app for keeping track of important meeting details. View upcoming meetings, subscribe to receive personalized summaries, and get key highlights delivered directly to your chat. With Summarize, managing your meetings has never been easier."
     },
     "accentColor": "#FFFFFF",
+    "staticTabs": [
+        {
+            "entityId": "index",
+            "name": "Meetings",
+            "contentUrl": "${{TAB_ENDPOINT}}/index.html#/tab",
+            "websiteUrl": "${{TAB_ENDPOINT}}/index.html#/tab",
+            "scopes": [
+                "personal"
+            ]
+        }
+    ],
     "bots": [
         {
             "botId": "a69596c9-7554-42d2-870e-c29da80772c6",
@@ -43,17 +54,6 @@
     ],
     "composeExtensions": [],
     "configurableTabs": [],
-    "staticTabs": [
-        {
-            "entityId": "index",
-            "name": "Personal Tab",
-            "contentUrl": "${{TAB_ENDPOINT}}/index.html#/tab",
-            "websiteUrl": "${{TAB_ENDPOINT}}/index.html#/tab",
-            "scopes": [
-                "personal"
-            ]
-        }
-    ],
     "permissions": [
         "identity",
         "messageTeamMembers"

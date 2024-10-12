@@ -1,34 +1,15 @@
-/* global MicrosoftGraph */
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, CardHeader, CardFooter, Text} from "@fluentui/react-components";
 import "./Welcome.css";
-import { useData } from "@microsoft/teamsfx-react";
-import { TeamsFxContext } from "../Context";
 import axios from "axios";
-import { getMeetings } from './Graph';
 import Modal from './Modal';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClock, faCalendarDay} from "@fortawesome/free-solid-svg-icons";
 
-export function Welcome({meeting}) {
-  
-  const { teamsUserCredential } = useContext(TeamsFxContext);
-  
-  const { data, error } = useData(async () => {
-    if (teamsUserCredential) {
-      const userInfo = await teamsUserCredential.getUserInfo();
-      return userInfo;
-    }
-  });
- 
-  const [meetings, setMeetings] = useState([
-    { id: "1", subject: "Team Sync", start: "2024-10-03", time: "T10:00:00", },
-    { id: "2", subject: "Project Review", start: "2024-10-03", time: "T12:00:00",},
-    { id: "3", subject: "Planning Session", start: "2024-10-04", time:"T09:00:00",  },
-    { id: "4", subject: "One-on-One", start: "2024-10-04", time: "T11:00:00",},
-    { id: "5", subject: "Client Call", start: "2024-10-05", time: "10:00:00", },
-  ]);
-
+export function Welcome() {
+  const [meetings, setMeetings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [selectedMeeting, setSelectedMeeting] =useState(null);
   const [isSubscribed, setIsSubscribed] = useState(false);
 
@@ -36,14 +17,19 @@ export function Welcome({meeting}) {
     useEffect(() => {
       const fetchMeetings = async () => {
         try {
-          const meetings = await getMeetings();
-          setMeetings(meetings);
+          const response = await fetch('/api/meetings/upcoming');
+          if (!response.ok) {
+           throw new Error('Network response was not ok');
+          }
+          const data = await response.json();
+          setMeetings(data);
+          setLoading(false);
         } catch(error) {
-          console.error("Error fetching meetings", error);
+          setError(error);
+          setLoading(false);
         }
       };
-
-      fetchMeetings();
+     fetchMeetings();
     }, []);
   
 
@@ -63,16 +49,15 @@ export function Welcome({meeting}) {
       console.error("Error")
     }
 
-   /* if (selectedMeeting) {
+   /*if (selectedMeeting) {
       //Subscription logic
       setIsSubscribed(true);
       alert('Subscribed to meeting: ${selectedMeeting.subject}');
     }*/
   }
   
-
   const [isModalOpen, setIsModalOpen] = useState(true);
-  
+ 
   useEffect(() => {
     setIsModalOpen(true);
   }, []);
@@ -84,26 +69,24 @@ export function Welcome({meeting}) {
   return (
     <div className="welcome page">
       <div className="narrow page-padding">
-
-       <h1> Upcoming Meetings </h1>
-
+       <h1> Upcoming Meetings</h1>
        <div className="meeting-card-container">
-
-        {meetings.length > 0? (
+        {loading && <p>Loading meetings...</p>}
+        {!loading &&meetings.length > 0? (
           meetings.map((meeting) => (
           <Card key={meeting.id} className="meeting-card" onClick={() => handleMeetingSelect(meeting)}>
-            
             <CardHeader
-            header={<Text weight="semibold">
-              {meeting.subject}
-            </Text>}
-            description={<Text> <FontAwesomeIcon icon={faCalendarDay} />  Day: {meeting.start} </Text>}/>
+            header={ <Text weight="semibold">
+             {meeting.subject}
+            </Text> }
+            description={<Text> <FontAwesomeIcon icon={faCalendarDay}/>  Day: {meeting.start} </Text>}
+            />
             <CardFooter>
-              <Text> <FontAwesomeIcon icon={faClock} /> Time: {meeting.time}</Text>
+              <Text> <FontAwesomeIcon icon={faClock}/>Time: {meeting.time}</Text>
             </CardFooter>
           </Card>          
         ))) : (
-          <p>No upcoming meetings scheduled.</p>
+          <p>No upcoming meetings available</p>
         )}
        </div>
       
@@ -118,7 +101,7 @@ export function Welcome({meeting}) {
             <button className="subscribe-button"
             onClick={() => handleSubscribe()}
             >
-              Subscribe to receive summary
+             Subscribe to receive meeting 
             </button>
           )}
 
@@ -127,11 +110,11 @@ export function Welcome({meeting}) {
       )}
 
        <Modal 
-       isOpen={isModalOpen} 
+       isOpen={isModalOpen}
        onClose={handleCloseModal}
        containerClassName="modal-container"
        />
-       
+
       </div>
     </div>
   );
